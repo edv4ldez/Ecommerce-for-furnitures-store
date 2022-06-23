@@ -3,6 +3,7 @@ import { Pagination } from 'swiper';
 import { SwiperSlide } from 'swiper/react/swiper-react';
 import 'swiper/swiper.min.css';
 import 'swiper/modules/pagination/pagination.min.css';
+import 'swiper/swiper.min.css';
 import { BannerCard } from '../BannerCard/BannerCard.component';
 import { StyledSwiper } from './Slider.style';
 import { filterBanners } from '../../utils/selectors/filterBanners';

@@ -5,7 +5,6 @@ import { Furnitures } from './Furnitures';
 ReactDOM.render(
   <React.StrictMode>
     <Furnitures />
-    <img />
   </React.StrictMode>,
   document.getElementById('root')
 );

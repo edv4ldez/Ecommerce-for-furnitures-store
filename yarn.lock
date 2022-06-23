@@ -4298,7 +4298,7 @@
     "domelementtype" "^2.0.1"
     "entities" "^2.0.0"
 
-"dom7@^4.0.4":
+"dom7@^4.0.1":
   "integrity" "sha512-DSSgBzQ4rJWQp1u6o+3FVwMNnT5bzQbMb+o31TjYYeRi05uAcpF8koxdfzeoe5ElzPmua7W7N28YJhF7iEKqIw=="
   "resolved" "https://registry.npmjs.org/dom7/-/dom7-4.0.4.tgz"
   "version" "4.0.4"
@@ -10661,7 +10661,7 @@
     "safer-buffer" "^2.0.2"
     "tweetnacl" "~0.14.0"
 
-"ssr-window@^4.0.0", "ssr-window@^4.0.2":
+"ssr-window@^4.0.0", "ssr-window@^4.0.1":
   "integrity" "sha512-ISv/Ch+ig7SOtw7G2+qkwfVASzazUnvlDTwypdLoPoySv+6MqlOV10VwPSE6EWkGjhW50lUmghPmpYZXMu/+AQ=="
   "resolved" "https://registry.npmjs.org/ssr-window/-/ssr-window-4.0.2.tgz"
   "version" "4.0.2"
@@ -11032,13 +11032,13 @@
     "unquote" "~1.1.1"
     "util.promisify" "~1.0.0"
 
-"swiper@^8.2.2":
-  "integrity" "sha512-t7Tts4ZD2ahM3InsHDlZ6YY4gi47zepGHx25cACd6fzgcVdAtYLbUihnEmck0HsDzqtkhciyfKsoUEhummZDEA=="
-  "resolved" "https://registry.npmjs.org/swiper/-/swiper-8.2.2.tgz"
-  "version" "8.2.2"
+"swiper@^7.3.1":
+  "integrity" "sha512-YHa8uI22UwF9Q6F9tCDSai7/BJo8uVHKampKYAIShlFrWoHfM+sCCn24Yeq3oqIKZv2bfSULzXKsXmh0VpCNeQ=="
+  "resolved" "https://registry.npmjs.org/swiper/-/swiper-7.3.1.tgz"
+  "version" "7.3.1"
   dependencies:
-    "dom7" "^4.0.4"
-    "ssr-window" "^4.0.2"
+    "dom7" "^4.0.1"
+    "ssr-window" "^4.0.1"
 
 "symbol-tree@^3.2.4":
   "integrity" "sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw=="
