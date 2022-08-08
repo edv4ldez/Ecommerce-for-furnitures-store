@@ -1,16 +1,16 @@
 import styled from 'styled-components';
 
-export const SliderContainer = styled.div`
+export const GalleryContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
 `;
 
-export const SliderImage = styled.div`
+export const GalleryImage = styled.div`
   display: flex;
 `;
 
-export const SliderArrows = styled.div`
+export const GalleryArrows = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;

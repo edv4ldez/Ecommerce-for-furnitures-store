@@ -1,37 +1,47 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Autoplay, Pagination, Navigation, Lazy } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
-import 'swiper/swiper-bundle.min.css';
-import 'swiper/swiper.min.css';
-import './styles.css';
+import cat from '../../assets/cat.jpeg';
+import './Gallery.style.js';
+import {
+  Back,
+  GalleryArrows,
+  GalleryContainer,
+  Next,
+} from './Gallery.style.js';
 
 const Gallery = () => {
-  const { productImages } = useSelector((state) => state.cart);
+  const { product } = useSelector((state) => state.cart);
+  console.log(product);
+  const [index, setIndex] = useState(1);
+  const handleBack = () => {
+    if (index > 0) {
+      setIndex((prev) => prev - 1);
+    }
+  };
+
+  const handleNext = () => {
+    if (index < product.images.length - 1) {
+      setIndex((prev) => prev + 1);
+    }
+  };
   return (
-    <Swiper
-      style={{
-        '--swiper-navigation-color': '#ff385c',
-        '--swiper-pagination-color': '#ff385c',
-      }}
-      autoplay={{
-        delay: 2500,
-        disableOnInteraction: false,
-      }}
-      slidesPerView={'auto'}
-      centeredSlides={true}
-      lazy={true}
-      spaceBetween={30}
-      pagination={{ clickable: true }}
-      navigation={true}
-      modules={[Lazy, Pagination, Navigation, Autoplay]}
-    >
-      {productImages.map((image) => (
-        <SwiperSlide key={image.url}>
-          <img src={image.url} width={200} />
-        </SwiperSlide>
-      ))}
-    </Swiper>
+    <GalleryContainer>
+      {Object.keys(product).length === 0 ? (
+        <img src={cat} alt="" />
+      ) : (
+        <img src={product.images[index].url} height={200} width={200} alt="" />
+      )}
+      <GalleryArrows>
+        <Back onClick={handleBack}>
+          <i className="fa-solid fa-arrow-left"> </i>
+          Back
+        </Back>
+        <Next onClick={handleNext}>
+          Next
+          <i className="fa-solid fa-arrow-right"> </i>
+        </Next>
+      </GalleryArrows>
+    </GalleryContainer>
   );
 };
 

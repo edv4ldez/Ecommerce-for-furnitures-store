@@ -2,7 +2,13 @@ export const filterProduct = (product = {}) => {
   return {
     id: product.id,
     categoryId: product.data.category.id,
-    images: product.data.images,
+    images: product.data.images.map((image) => {
+      return {
+        url: image.image.url,
+        width: image.image.dimensions.width,
+        height: image.image.dimensions.height,
+      };
+    }),
     imageHeight: product.data.mainimage.dimensions.height,
     imageWidth: product.data.mainimage.dimensions.width,
     imageUrl: product.data.mainimage.url,

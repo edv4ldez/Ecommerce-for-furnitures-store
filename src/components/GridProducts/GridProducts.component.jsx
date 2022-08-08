@@ -1,7 +1,7 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { ProductsContent } from './GridProducts.style';
 import ProductCard from '../ProductCard/ProductCard.component';
+import { useSelector } from 'react-redux';
 
 const GridProducts = () => {
   const { featuredProducts, filteredProducts } = useSelector(
@@ -11,7 +11,6 @@ const GridProducts = () => {
     Object.values(filteredProducts).flat().length === 0
       ? featuredProducts
       : Object.values(filteredProducts).flat();
-
   return (
     <ProductsContent>
       {products.map((product) => (

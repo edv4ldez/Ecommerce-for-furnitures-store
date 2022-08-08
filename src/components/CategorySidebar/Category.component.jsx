@@ -1,16 +1,19 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { activeCategory, deactiveCategory } from '../../actions/categories';
-import {
-  removeProductsByCategory,
-  setProductsByCategory,
-} from '../../actions/products';
 import {
   finishLoadingCategories,
   startLoadingCategories,
 } from '../../actions/ui';
-import { CategoryActive, CategoryNotActive } from './CategorySidebar.style';
 import PropTypes from 'prop-types';
+import {
+  removeProductsByCategory,
+  setProductsByCategory,
+} from '../../features/products/productsSlice';
+import {
+  activeCategory,
+  deactiveCategory,
+} from '../../features/categories/categoriesSlice';
+import { CategoryActive, CategoryNotActive } from './CategorySidebar.style';
 
 const Category = ({ id, category, isActive }) => {
   const dispatch = useDispatch();
@@ -18,8 +21,9 @@ const Category = ({ id, category, isActive }) => {
     dispatch(startLoadingCategories());
     setTimeout(() => {
       dispatch(finishLoadingCategories());
-      dispatch(activeCategory(id));
       dispatch(setProductsByCategory(id));
+      //dispatch(setProductsByCategory(id));
+      dispatch(activeCategory(id));
     }, 2000);
   };
 

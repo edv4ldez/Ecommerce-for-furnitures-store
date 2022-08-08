@@ -1,15 +1,16 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setFeaturedProducts } from '../../actions/products';
 import { finishLoadingProducts, startLoadingProducts } from '../../actions/ui';
 import { API_BASE_URL } from '../constants';
-import { filterProducts } from '../selectors/filterProducts';
 import { useLatestAPI } from './useLatestAPI';
 
-export function useFeaturedProducts() {
+export const useFeaturedProducts = () => {
   const dispatch = useDispatch();
   const { ref: apiRef, isLoading: isApiMetadataLoading } = useLatestAPI();
-
+  const [featuredProducts, setFeaturedProducts] = useState(() => ({
+    data: [],
+    isLoading: true,
+  }));
   useEffect(() => {
     if (!apiRef || isApiMetadataLoading) {
       return () => {};
@@ -28,10 +29,11 @@ export function useFeaturedProducts() {
           }
         );
         const { results } = await response.json();
-        const data = filterProducts(results);
-        dispatch(setFeaturedProducts(data));
+        setFeaturedProducts({ data: results, isLoading: false });
+        //dispatch(setFeaturedProducts(data));
         dispatch(finishLoadingProducts());
       } catch (err) {
+        setFeaturedProducts({ data: {}, isLoading: false });
         console.error(err);
       }
     }
@@ -42,4 +44,6 @@ export function useFeaturedProducts() {
       controller.abort();
     };
   }, [apiRef, isApiMetadataLoading]);
-}
+
+  return featuredProducts;
+};

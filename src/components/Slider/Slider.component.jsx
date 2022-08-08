@@ -1,39 +1,47 @@
-import React from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
-import 'swiper/swiper-bundle.min.css';
-import 'swiper/swiper.min.css';
-import { Autoplay, Pagination, Navigation } from 'swiper';
+import React, { useState } from 'react';
 import BannerCard from '../BannerCard/BannerCard.component';
 import { useFeaturedBanners } from '../../utils/hooks/useFeaturedBanners';
+import { Back, Next, SliderArrows, SliderContainer } from './Slider.style';
+import cat from '../../assets/cat.jpeg';
 
 const Slider = () => {
   const { data: banners } = useFeaturedBanners();
+  const [index, setIndex] = useState(0);
+  const handleBack = () => {
+    if (index > 0) {
+      setIndex((prev) => prev - 1);
+    }
+  };
+
+  const handleNext = () => {
+    if (index < banners.length - 1) {
+      setIndex((prev) => prev + 1);
+    }
+  };
   return (
-    <Swiper
-      style={{
-        '--swiper-navigation-color': '#ff385c',
-        '--swiper-pagination-color': '#ff385c',
-      }}
-      slidesPerView={1}
-      spaceBetween={10}
-      pagination={{
-        clickable: true,
-      }}
-      navigation={true}
-      modules={[Pagination, Autoplay, Navigation]}
-    >
-      {banners.map((banner) => (
-        <SwiperSlide key={banner.id}>
-          <BannerCard
-            text={banner.text}
-            height={banner.height}
-            url={banner.url}
-            alt={banner.alt}
-            title={banner.title}
-          />
-        </SwiperSlide>
-      ))}
-    </Swiper>
+    <SliderContainer>
+      <SliderArrows>
+        <Back onClick={handleBack}>
+          <i className="fa-solid fa-arrow-left"> </i>
+          Back
+        </Back>
+        <Next onClick={handleNext}>
+          Next
+          <i className="fa-solid fa-arrow-right"> </i>
+        </Next>
+      </SliderArrows>
+      {banners.length === 0 ? (
+        <img src={cat} alt="" />
+      ) : (
+        <BannerCard
+          text={banners[index].text}
+          height={banners[index].height}
+          url={banners[index].url}
+          alt={banners[index].alt}
+          title={banners[index].title}
+        />
+      )}
+    </SliderContainer>
   );
 };
 

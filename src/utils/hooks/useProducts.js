@@ -1,22 +1,18 @@
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { setPage, setTotalPages } from '../../actions/page';
-import { setFeaturedProducts } from '../../actions/products';
-import { finishLoadingProducts, startLoadingProducts } from '../../actions/ui';
+import { useEffect, useState } from 'react';
 import { API_BASE_URL } from '../constants';
-import { filterProducts } from '../selectors/filterProducts';
 import { useLatestAPI } from './useLatestAPI';
 
-export function useProducts(page) {
-  const dispatch = useDispatch();
+export function useProducts(page = 1) {
   const { ref: apiRef, isLoading: isApiMetadataLoading } = useLatestAPI();
-
+  const [products, setProducts] = useState({
+    data: [],
+    isLoading: true,
+  });
   useEffect(() => {
     if (!apiRef || isApiMetadataLoading) {
       return () => {};
     }
 
-    dispatch(startLoadingProducts());
     const controller = new AbortController();
 
     async function getproducts() {
@@ -29,12 +25,12 @@ export function useProducts(page) {
             signal: controller.signal,
           }
         );
-        const data = await response.json();
-        const products = filterProducts(data.results);
-        dispatch(setPage(data.page));
-        dispatch(setTotalPages(data.total_pages));
-        dispatch(finishLoadingProducts());
-        dispatch(setFeaturedProducts(products));
+        const { results } = await response.json();
+        //dispatch(setPage(data.page));
+        //dispatch(setTotalPages(data.total_pages));
+        //dispatch(finishLoadingProducts());
+        //dispatch(setFeaturedProducts(products));
+        setProducts({ data: results, isLoading: false });
       } catch (err) {
         console.error(err);
       }
@@ -46,4 +42,5 @@ export function useProducts(page) {
       controller.abort();
     };
   }, [apiRef, isApiMetadataLoading, page]);
+  return products;
 }

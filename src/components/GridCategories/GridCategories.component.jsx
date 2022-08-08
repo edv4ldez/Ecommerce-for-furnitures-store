@@ -1,12 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { useCategories } from '../../utils/hooks/useCategories';
 import CategoryCard from '../CategoryCard/CategoryCard.component';
 import { CategorySection } from './GridCategories.style';
 
 const GridCategories = () => {
-  useCategories();
   const { categories } = useSelector((state) => state.categories);
+  console.log(useSelector((state) => state.categories));
   return (
     <CategorySection>
       {categories.map((category) => (

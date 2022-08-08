@@ -1,16 +1,17 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setImagesProduct, setProduct } from '../../actions/cart';
 import { finishLoadingProduct, startLoadingProduct } from '../../actions/ui';
 import { API_BASE_URL } from '../constants';
-import { filterImages } from '../selectors/filterImages';
 import { filterProduct } from '../selectors/filterProduct';
 import { useLatestAPI } from './useLatestAPI';
 
 export function useProduct(productId) {
   const dispatch = useDispatch();
   const { ref: apiRef, isLoading: isApiMetadataLoading } = useLatestAPI();
-
+  const [productFeatured, setProductFeatured] = useState({
+    data: {},
+    isLoading: true,
+  });
   useEffect(() => {
     if (!apiRef || isApiMetadataLoading) {
       return () => {};
@@ -27,12 +28,16 @@ export function useProduct(productId) {
         );
         const data = await response.json();
         const { results } = data;
+        //const images = filterImages(product.images);
+        //product.images = images;
         const product = filterProduct(results[0]);
-        const images = filterImages(product.images);
-        product.images = images;
         dispatch(finishLoadingProduct());
-        dispatch(setImagesProduct(images));
-        dispatch(setProduct(product));
+        //dispatch(setImagesProduct(images));
+        setProductFeatured({
+          data: product,
+          isLoading: true,
+        });
+        //dispatch(setProduct(product));
       } catch (err) {
         console.log(err);
       }
@@ -44,4 +49,5 @@ export function useProduct(productId) {
       controller.abort();
     };
   }, [apiRef, isApiMetadataLoading, productId]);
+  return productFeatured;
 }

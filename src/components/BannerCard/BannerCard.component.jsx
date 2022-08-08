@@ -11,7 +11,13 @@ import PropTypes from 'prop-types';
 const BannerCard = ({ text, height, url, alt, title }) => {
   return (
     <Banner>
-      <BannerImage src={url} height={height / 2} width={780} alt={alt} />
+      <BannerImage
+        data-testid="banner-image"
+        src={url}
+        height={height / 2}
+        width={780}
+        alt={alt}
+      />
       <Information>
         <Title>{title}</Title>
         <Description>{text}</Description>
