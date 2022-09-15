@@ -1,25 +1,39 @@
 import React, { useEffect, useMemo } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import Loading from '../../components/Alerts/Loading.component';
 import CategorySidebar from '../../components/CategorySidebar/CategorySidebar.component';
 import GridProducts from '../../components/GridProducts/GridProducts.component';
 import Pagination from '../../components/Pagination/Pagination.component';
 import { setCategories } from '../../features/categories/categoriesSlice';
-import { setProducts } from '../../features/products/productsSlice';
+import {
+  setProducts,
+  setTotalPages,
+} from '../../features/products/productsSlice';
 import { useCategories } from '../../utils/hooks/useCategories';
 import { useProducts } from '../../utils/hooks/useProducts';
-import { filterCategories } from '../../utils/selectors/filterCategories';
-import { filterProducts } from '../../utils/selectors/filterProducts';
+import { mappingCategories } from '../../utils/selectors/mappingCategories';
+import { mappingProducts } from '../../utils/selectors/mappingProducts';
 import { ProductListContainer } from './ProductList.style';
 
 const ProductList = () => {
   const dispatch = useDispatch();
-  const { data } = useProducts();
-  const { data: featuredCategories } = useCategories();
-  const products = useMemo(() => filterProducts(data), [data]);
+  const { page } = useSelector((state) => state.products);
+  const { selectedCategories } = useSelector((state) => state.categories);
+  const {
+    data: { results, total_pages },
+    isLoading: isLoadingProducts,
+  } = useProducts(selectedCategories, page);
+  const { data: featuredCategories, isLoading: isLoadingCategories } =
+    useCategories();
+  const products = useMemo(() => mappingProducts(results), [results]);
   const categories = useMemo(
-    () => filterCategories(featuredCategories),
+    () => mappingCategories(featuredCategories),
     [featuredCategories]
   );
+
+  useEffect(() => {
+    dispatch(setTotalPages(total_pages));
+  }, [total_pages]);
 
   useEffect(() => {
     dispatch(setProducts(products));
@@ -28,10 +42,10 @@ const ProductList = () => {
   useEffect(() => {
     dispatch(setCategories(categories));
   }, [categories]);
-  //const { page } = useSelector((state) => state.pages);
-  //useProducts(page);
   return (
     <>
+      {isLoadingCategories && <Loading />}
+      {isLoadingProducts && <Loading />}
       <ProductListContainer>
         <CategorySidebar />
         <GridProducts />

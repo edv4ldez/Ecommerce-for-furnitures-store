@@ -1,23 +1,16 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { activeCategory } from '../../actions/categories';
-import { setProductsByCategory } from '../../actions/products';
-import {
-  finishLoadingCategories,
-  startLoadingCategories,
-} from '../../actions/ui';
 import { Category, ImageSection, Title } from './CategoryCard.style';
 import PropTypes from 'prop-types';
+import { activeCategory } from '../../features/categories/categoriesSlice';
 
 const CategoryCard = ({ id, name, url, alt }) => {
   const dispatch = useDispatch();
 
   const handleAdd = () => {
-    dispatch(startLoadingCategories());
+    dispatch(activeCategory());
     setTimeout(() => {
-      dispatch(finishLoadingCategories());
       dispatch(activeCategory(id));
-      dispatch(setProductsByCategory(id));
     }, 2000);
   };
 

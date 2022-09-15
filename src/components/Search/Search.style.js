@@ -1,6 +1,11 @@
+import { Field, Form } from 'formik';
 import styled from 'styled-components';
 
-export const SearchInput = styled.input`
+export const SearchContainer = styled(Form)`
+  display: flex;
+`;
+
+export const SearchInput = styled(Field)`
   outline: none;
   border: solid;
   border-color: gray;

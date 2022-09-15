@@ -11,7 +11,6 @@ import {
 
 const Gallery = () => {
   const { product } = useSelector((state) => state.cart);
-  console.log(product);
   const [index, setIndex] = useState(1);
   const handleBack = () => {
     if (index > 0) {

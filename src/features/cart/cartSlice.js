@@ -1,10 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { calculateTotal } from '../../utils/selectors/calculateTotalPrice';
-import { calculateTotalProducts } from '../../utils/selectors/calculateTotalProducts';
 
 const initialState = {
   product: {},
-  productImages: [],
   cart: {},
   total: 0,
   numberProducts: 0,
@@ -15,40 +12,37 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     setProduct: (state, action) => {
-      console.log(action.payload);
       state.product = action.payload;
     },
     addToCart: (state, action) => {
       state.cart = {
         ...state.cart,
-        [action.payload.id]: {
-          product: action.payload.product,
-          quantity: action.payload.quantity,
+        [state.product.id]: {
+          product: state.product,
+          quantity: Number(action.payload),
         },
       };
-    },
-    calculateTotalCart: (state) => {
-      state.total = {
-        total:
-          Object.keys(state.cart).length > 0
-            ? calculateTotal(Object.values(state.cart))
-            : 0,
-      };
-    },
-    calculateTotalProducts: (state) => {
-      state.numberProducts =
-        Object.keys(state.cart).length > 0
-          ? calculateTotalProducts(Object.values(state.cart))
-          : 0;
     },
     changeNumberProductsCart: (state, action) => {
       state.cart = {
         ...state.cart,
         [action.payload.id]: {
-          product: state.cart[action.payload.id].product,
-          quantity: action.payload.quantity,
+          ...state.cart[action.payload.id],
+          quantity: Number(action.payload.quantity),
         },
       };
+    },
+    calculateNumberOfProducts: (state) => {
+      state.numberProducts = 0;
+      Object.values(state.cart).forEach((product) => {
+        state.numberProducts += product.quantity;
+      });
+    },
+    calculateTotalCart: (state) => {
+      state.total = 0;
+      Object.values(state.cart).forEach((product) => {
+        state.total += Number(product.product.price * product.quantity);
+      });
     },
     deleteProduct: (state, action) => {
       delete state.cart[action.payload];
@@ -61,8 +55,10 @@ export const {
   setProduct,
   addToCart,
   calculateTotalCart,
+  calculateNumberOfProducts,
   changeNumberProductsCart,
   deleteProduct,
+  createOrder,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

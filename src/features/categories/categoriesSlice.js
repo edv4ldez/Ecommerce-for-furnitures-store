@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   categories: [],
+  selectedCategories: [],
 };
 
 export const categoriesSlice = createSlice({
@@ -12,35 +13,24 @@ export const categoriesSlice = createSlice({
       state.categories = action.payload;
     },
     activeCategory: (state, action) => {
-      state.categories = [
-        ...state.categories.map((category) => {
-          if (category.id === action.payload) {
-            return {
-              ...category,
-              isActive: true,
-            };
-          }
-          return category;
-        }),
-      ];
+      state.selectedCategories.push(action.payload);
     },
     deactiveCategory: (state, action) => {
-      state.categories = [
-        ...state.categories.map((category) => {
-          if (category.id === action.payload) {
-            return {
-              ...category,
-              isActive: false,
-            };
-          }
-          return category;
-        }),
-      ];
+      state.selectedCategories = state.selectedCategories.filter(
+        (categoryId) => categoryId != action.payload
+      );
+    },
+    clearCategories: (state) => {
+      state.selectedCategories = [];
     },
   },
 });
 
-export const { setCategories, activeCategory, deactiveCategory } =
-  categoriesSlice.actions;
+export const {
+  setCategories,
+  activeCategory,
+  deactiveCategory,
+  clearCategories,
+} = categoriesSlice.actions;
 
 export default categoriesSlice.reducer;

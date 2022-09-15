@@ -1,4 +1,6 @@
+import { Formik } from 'formik';
 import React from 'styled-components';
+import TotalCart from '../TotalCart/TotalCart.component';
 import {
   CustomerEmail,
   CustomerName,
@@ -9,16 +11,29 @@ import {
 
 const FormCheckout = () => {
   return (
-    <FormCheckoutContainer>
-      Name
-      <CustomerName />
-      Email
-      <CustomerEmail />
-      Zip code
-      <ZipCode />
-      Comments
-      <Notes />
-    </FormCheckoutContainer>
+    <Formik
+      initialValues={{
+        nameClient: '',
+        emailClient: '',
+        zipCode: '',
+        notes: '',
+      }}
+      onSubmit={() => {
+        confirm(`Please, Click on confirm to buy`);
+      }}
+    >
+      <FormCheckoutContainer>
+        Name
+        <CustomerName type="text" name="nameClient" />
+        Email
+        <CustomerEmail type="email" name="emailClient" />
+        Zip code
+        <ZipCode type="text" name="zipCode" />
+        Comments
+        <Notes type="text" name="notes" />
+        <TotalCart />
+      </FormCheckoutContainer>
+    </Formik>
   );
 };
 

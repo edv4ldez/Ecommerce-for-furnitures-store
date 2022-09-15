@@ -1,36 +1,34 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { setSearchWord } from '../../actions/products';
-import { useForm } from '../../utils/hooks/useForm/useForm';
 import queryString from 'query-string';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { SearchInput, SubmitButton } from './Search.style';
+import { SearchContainer, SearchInput, SubmitButton } from './Search.style';
+import { setSearchTerm } from '../../features/products/productsSlice';
+import { Formik } from 'formik';
 
 export const Search = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
   const { q = '' } = queryString.parse(location.search);
-  const [{ product }, handleInputChange] = useForm({
-    product: q,
-  });
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (product.trim().length <= 1) {
-      return;
-    }
-    dispatch(setSearchWord(product));
-    navigate(`/search?q=${product}`, { replace: true });
-  };
+
   return (
-    <>
-      <SearchInput
-        type="text"
-        name="product"
-        placeholder="Search"
-        onChange={handleInputChange}
-      />
-      <SubmitButton onClick={handleSearch}>Search</SubmitButton>
-    </>
+    <Formik
+      initialValues={{
+        searchTerm: q,
+      }}
+      onSubmit={({ searchTerm }) => {
+        if (searchTerm.trim().length <= 1) {
+          return;
+        }
+        dispatch(setSearchTerm(searchTerm));
+        navigate(`/search?q=${searchTerm}`, { replace: true });
+      }}
+    >
+      <SearchContainer>
+        <SearchInput type="text" name="searchTerm" placeholder="Search" />
+        <SubmitButton type="submit">Search</SubmitButton>
+      </SearchContainer>
+    </Formik>
   );
 };

@@ -1,31 +1,24 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearFilter } from '../../actions/categories';
-import { clearFilteredProducts } from '../../actions/products';
+import { clearCategories } from '../../features/categories/categoriesSlice';
 import Category from './Category.component';
 import { Categories, Filter } from './CategorySidebar.style';
 
 const CategorySidebar = () => {
   const { categories } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
-  const { filteredProducts } = useSelector((state) => state.products);
+  const { selectedCategories } = useSelector((state) => state.categories);
 
   const handleFilter = () => {
-    dispatch(clearFilter());
-    dispatch(clearFilteredProducts());
+    dispatch(clearCategories());
   };
   return (
     <Categories data-testid="products">
       Category
       {categories.map((category) => (
-        <Category
-          key={category.id}
-          id={category.id}
-          category={category.name}
-          isActive={category.isActive}
-        />
+        <Category key={category.id} id={category.id} category={category.name} />
       ))}
-      {Object.keys(filteredProducts).flat().length === 0 ? (
+      {selectedCategories.length === 0 ? (
         ''
       ) : (
         <Filter onClick={handleFilter}>Clear filter</Filter>

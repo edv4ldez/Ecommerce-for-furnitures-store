@@ -1,47 +1,46 @@
+import { Formik } from 'formik';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import {
+  calculateNumberOfProducts,
   calculateTotalCart,
-  calculateTotalProducts,
-  changeNumberProducts,
-} from '../../actions/cart';
-import { useForm } from '../../utils/hooks/useForm/useForm';
+  changeNumberProductsCart,
+} from '../../features/cart/cartSlice';
 import {
   Change,
   ChangeButtonContainer,
   NumberProducts,
 } from './ChangeButton.style';
-const ChangeButton = ({ id }) => {
+const ChangeButton = ({ id, stock }) => {
   const dispatch = useDispatch();
-  const { cart } = useSelector((state) => state.cart);
-  const { quantity } = cart[id];
-  const [{ numberProducts }, handleInputChange] = useForm({
-    numberProducts: quantity,
-  });
-  const stock = 5;
-  const handleButton = () => {
-    dispatch(changeNumberProducts(id, numberProducts));
-    dispatch(calculateTotalCart());
-    dispatch(calculateTotalProducts());
-  };
+  const { cart: products } = useSelector((state) => state.cart);
+  const { quantity } = products[id];
+
   return (
     <>
-      {cart > stock && <b>Select another number of items, please</b>}
-      <ChangeButtonContainer>
-        <NumberProducts
-          type="number"
-          name="numberProducts"
-          value={numberProducts}
-          onChange={handleInputChange}
-        />
-        <Change
-          disabled={numberProducts <= stock ? false : true}
-          onClick={handleButton}
-        >
-          Change
-        </Change>
-      </ChangeButtonContainer>
+      <Formik
+        initialValues={{
+          numberOfProducts: quantity,
+        }}
+        onSubmit={({ numberOfProducts }) => {
+          if (numberOfProducts <= 0 || numberOfProducts > stock) {
+            alert('Please, select another number of products');
+          }
+          if (numberOfProducts > 0 && numberOfProducts <= stock) {
+            dispatch(
+              changeNumberProductsCart({ id, quantity: numberOfProducts })
+            );
+            dispatch(calculateNumberOfProducts());
+            dispatch(calculateTotalCart());
+          }
+        }}
+      >
+        <ChangeButtonContainer>
+          <NumberProducts type="number" name="numberOfProducts" />
+          <Change type="submit">Change</Change>
+        </ChangeButtonContainer>
+      </Formik>
     </>
   );
 };

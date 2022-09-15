@@ -1,4 +1,4 @@
-export const filterProducts = (products = []) => {
+export const mappingProducts = (products = []) => {
   return products.map((product) => {
     return {
       id: product.id,

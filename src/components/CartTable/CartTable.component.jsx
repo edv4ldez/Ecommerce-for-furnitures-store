@@ -21,22 +21,24 @@ const CartTable = () => {
           </tr>
         </thead>
         <tbody>
-          {products.map(({ product, quantity }) => (
-            <tr key={product.id}>
-              <td>
-                <Image src={product.imageUrl} alt="" />
-              </td>
-              <td>{product.name}</td>
-              <td>${product.price}</td>
-              <td>
-                <ChangeButton id={product.id} />
-              </td>
-              <td>${product.price * Number(quantity)}</td>
-              <td>
-                <DeleteProduct id={product.id} />
-              </td>
-            </tr>
-          ))}
+          {products.map(
+            ({ product: { id, imageUrl, name, price, stock }, quantity }) => (
+              <tr key={id}>
+                <td>
+                  <Image src={imageUrl} alt="" />
+                </td>
+                <td>{name}</td>
+                <td>${price}</td>
+                <td>
+                  <ChangeButton id={id} stock={stock} />
+                </td>
+                <td>${price * Number(quantity)}</td>
+                <td>
+                  <DeleteProduct id={id} />
+                </td>
+              </tr>
+            )
+          )}
         </tbody>
       </table>
     </CartTableContainer>

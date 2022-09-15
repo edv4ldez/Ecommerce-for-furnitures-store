@@ -4,6 +4,8 @@ const initialState = {
   featuredProducts: [],
   filteredProducts: {},
   searchTerm: '',
+  page: 1,
+  totalPages: 1,
 };
 
 export const productsSlice = createSlice({
@@ -13,21 +15,29 @@ export const productsSlice = createSlice({
     setProducts: (state, action) => {
       state.featuredProducts = action.payload;
     },
-    setProductsByCategory: (state, action) => {
-      state.filteredProducts = {
-        ...state.filteredProducts,
-        [action.payload]: state.featuredProducts.filter(
-          (product) => action.payload === product.categoryId
-        ),
-      };
+    nextPage: (state) => {
+      state.page += 1;
     },
-    removeProductsByCategory: (state, action) => {
-      delete state.filteredProducts[action.payload];
+    backPage: (state) => {
+      state.page -= 1;
+    },
+    setTotalPages: (state, action) => {
+      state.totalPages = action.payload;
+    },
+    setSearchTerm: (state, action) => {
+      state.searchTerm = action.payload;
     },
   },
 });
 
-export const { setProducts, setProductsByCategory, removeProductsByCategory } =
-  productsSlice.actions;
+export const {
+  setProducts,
+  setProductsByCategory,
+  removeProductsByCategory,
+  nextPage,
+  backPage,
+  setTotalPages,
+  setSearchTerm,
+} = productsSlice.actions;
 
 export default productsSlice.reducer;

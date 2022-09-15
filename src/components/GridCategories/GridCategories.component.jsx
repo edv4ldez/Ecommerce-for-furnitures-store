@@ -5,7 +5,6 @@ import { CategorySection } from './GridCategories.style';
 
 const GridCategories = () => {
   const { categories } = useSelector((state) => state.categories);
-  console.log(useSelector((state) => state.categories));
   return (
     <CategorySection>
       {categories.map((category) => (

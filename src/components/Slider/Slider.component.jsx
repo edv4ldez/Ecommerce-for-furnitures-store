@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import BannerCard from '../BannerCard/BannerCard.component';
 import { useFeaturedBanners } from '../../utils/hooks/useFeaturedBanners';
 import { Back, Next, SliderArrows, SliderContainer } from './Slider.style';
-import cat from '../../assets/cat.jpeg';
+import Loading from '../Alerts/Loading.component';
 
 const Slider = () => {
   const { data: banners } = useFeaturedBanners();
@@ -31,7 +31,7 @@ const Slider = () => {
         </Next>
       </SliderArrows>
       {banners.length === 0 ? (
-        <img src={cat} alt="" />
+        <Loading />
       ) : (
         <BannerCard
           text={banners[index].text}

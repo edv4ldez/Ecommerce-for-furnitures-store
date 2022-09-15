@@ -25,8 +25,9 @@ export function useCategories() {
             signal: controller.signal,
           }
         );
-        const { results: data } = await response.json();
-        setCategories({ data, isLoading: false });
+        const data = await response.json();
+        const { results } = data;
+        setCategories({ data: results, isLoading: false });
       } catch (err) {
         console.error(err);
       }
