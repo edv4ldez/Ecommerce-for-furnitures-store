@@ -14,7 +14,6 @@ export function useProducts(
     data: [],
     isLoading: true,
   });
-  console.log(products);
 
   useEffect(() => {
     if (!apiRef || isApiMetadataLoading) {
@@ -55,7 +54,6 @@ export function useProducts(
         }
 
         if ((selectedCategories.length > 0) | (pathname === '/products')) {
-          console.log(selectedCategories);
           response = await fetch(
             commonUrl +
               `&q=${encodeURIComponent('[[at(document.type, "product")]]')}
@@ -71,7 +69,6 @@ export function useProducts(
         }
         const data = await response.json();
         setProducts({ data, isLoading: false });
-        console.log(products);
       } catch (err) {
         setProducts({ data: [], isLoading: true });
         console.error(err);

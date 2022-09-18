@@ -31,7 +31,7 @@ export function useProduct(productId) {
           isLoading: false,
         });
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     }
 
