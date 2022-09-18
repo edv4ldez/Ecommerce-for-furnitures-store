@@ -1,6 +1,7 @@
+import { Field, Form } from 'formik';
 import styled from 'styled-components';
 
-export const FormCheckoutContainer = styled.div`
+export const FormCheckoutContainer = styled(Form)`
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -15,7 +16,7 @@ export const FormCheckoutContainer = styled.div`
   }
 `;
 
-export const CustomerName = styled.input`
+export const CustomerName = styled(Field)`
   height: 40px;
   border-radius: 8px;
   outline: none;
@@ -26,14 +27,5 @@ export const CustomerName = styled.input`
 `;
 
 export const CustomerEmail = CustomerName,
-  ZipCode = CustomerName;
-
-export const Notes = styled.textarea`
-  height: 56px;
-  resize: vertical;
-  outline: none;
-  cursor: pointer;
-  border-style: solid;
-  border-color: gray;
-  border-width: 2px;
-`;
+  ZipCode = CustomerName,
+  Notes = CustomerName;

@@ -1,23 +1,29 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import AddCartButton from '../../components/AddCartButton/AddCartButton.component';
+import Loading from '../../components/Alerts/Loading.component';
 import Details from '../../components/Details/Details.component';
 import Gallery from '../../components/Gallery/Gallery.component';
-import { Loading } from '../../GlobalStyle.style';
+import { setProduct } from '../../features/cart/cartSlice';
 import { useProduct } from '../../utils/hooks/useProduct';
 import { ProductDetailContainer } from './ProductDetails.style';
 const ProductDetails = () => {
+  const dispatch = useDispatch();
   const { productId } = useParams();
-  useProduct(productId);
-  const { loadingProduct } = useSelector((state) => state.ui);
+  const { data: featuredProduct, isLoading } = useProduct(productId);
+  useEffect(() => {
+    dispatch(setProduct(featuredProduct));
+  }, [featuredProduct]);
   return (
-    <ProductDetailContainer>
-      {loadingProduct && <Loading>Loading</Loading>}
-      <Gallery />
-      <Details />
-      <AddCartButton />
-    </ProductDetailContainer>
+    <>
+      {isLoading && <Loading />}
+      <ProductDetailContainer>
+        <Gallery />
+        <Details />
+        <AddCartButton />
+      </ProductDetailContainer>
+    </>
   );
 };
 

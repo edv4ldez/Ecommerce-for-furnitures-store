@@ -1,25 +1,16 @@
-import { applyMiddleware, combineReducers, createStore, compose } from 'redux';
-import thunk from 'redux-thunk';
-import { cartReducer } from '../reducers/cartReducer';
-import { categoriesReducer } from '../reducers/categoriesReducer';
-import { pagesReducer } from '../reducers/pagesReducer';
-import { productsReducer } from '../reducers/productsReducer';
-import { uiReducer } from '../reducers/uiReducer';
+import productsReducer from '../features/products/productsSlice';
+import categoriesReducer from '../features/categories/categoriesSlice';
+import cartReducer from '../features/cart/cartSlice';
+import { configureStore } from '@reduxjs/toolkit';
 
-const composeEnhancers =
-  (typeof window !== 'undefined' &&
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
-  compose;
-
-const reducers = combineReducers({
+const reducers = {
   categories: categoriesReducer,
   products: productsReducer,
-  ui: uiReducer,
   cart: cartReducer,
-  pages: pagesReducer,
-});
+};
 
-export const store = createStore(
-  reducers,
-  composeEnhancers(applyMiddleware(thunk))
-);
+export const store = configureStore({
+  reducer: {
+    ...reducers,
+  },
+});

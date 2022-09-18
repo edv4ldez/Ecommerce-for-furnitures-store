@@ -1,24 +1,18 @@
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { setCategories } from '../../actions/categories';
-import {
-  finishLoadingCategories,
-  startLoadingCategories,
-} from '../../actions/ui';
+import { useEffect, useState } from 'react';
 import { API_BASE_URL } from '../constants';
-import { filterCategories } from '../selectors/filterCategories';
 import { useLatestAPI } from './useLatestAPI';
 
 export function useCategories() {
-  const dispatch = useDispatch();
   const { ref: apiRef, isLoading: isApiMetadataLoading } = useLatestAPI();
-
+  const [categories, setCategories] = useState(() => ({
+    data: [],
+    isLoading: true,
+  }));
   useEffect(() => {
     if (!apiRef || isApiMetadataLoading) {
       return () => {};
     }
 
-    dispatch(startLoadingCategories());
     const controller = new AbortController();
 
     async function getFeaturedCategories() {
@@ -31,10 +25,9 @@ export function useCategories() {
             signal: controller.signal,
           }
         );
-        const { results } = await response.json();
-        const data = filterCategories(results);
-        dispatch(setCategories(data));
-        dispatch(finishLoadingCategories());
+        const data = await response.json();
+        const { results } = data;
+        setCategories({ data: results, isLoading: false });
       } catch (err) {
         console.error(err);
       }
@@ -46,4 +39,6 @@ export function useCategories() {
       controller.abort();
     };
   }, [apiRef, isApiMetadataLoading]);
+
+  return categories;
 }

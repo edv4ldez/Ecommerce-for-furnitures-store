@@ -1,41 +1,76 @@
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { setPage, setTotalPages } from '../../actions/page';
-import { setFeaturedProducts } from '../../actions/products';
-import { finishLoadingProducts, startLoadingProducts } from '../../actions/ui';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { API_BASE_URL } from '../constants';
-import { filterProducts } from '../selectors/filterProducts';
 import { useLatestAPI } from './useLatestAPI';
 
-export function useProducts(page) {
-  const dispatch = useDispatch();
+export function useProducts(
+  selectedCategories = [],
+  page = 1,
+  searchTerm = 'home'
+) {
+  const { pathname } = useLocation();
   const { ref: apiRef, isLoading: isApiMetadataLoading } = useLatestAPI();
+  const [products, setProducts] = useState({
+    data: [],
+    isLoading: true,
+  });
 
   useEffect(() => {
     if (!apiRef || isApiMetadataLoading) {
       return () => {};
     }
-
-    dispatch(startLoadingProducts());
     const controller = new AbortController();
-
     async function getproducts() {
       try {
-        const response = await fetch(
-          `${API_BASE_URL}/documents/search?ref=${apiRef}&q=${encodeURIComponent(
-            '[[at(document.type, "product")]]'
-          )}&lang=en-us&page=${page}&pageSize=12`,
-          {
-            signal: controller.signal,
-          }
-        );
+        let response;
+        setProducts({ data: [], isLoading: true });
+        const commonUrl = `${API_BASE_URL}/documents/search?ref=${apiRef}`;
+
+        if (pathname === '/search') {
+          response = await fetch(
+            commonUrl +
+              `&q=${encodeURIComponent(
+                '[[at(document.type, "product")]]'
+              )}&q=${encodeURIComponent(
+                `[[fulltext(document, ${JSON.stringify(searchTerm)})]]`
+              )}&lang=en-us&page=${page}&pageSize=20`,
+            {
+              signal: controller.signal,
+            }
+          );
+        }
+        if (pathname === '/') {
+          response = await fetch(
+            commonUrl +
+              `&q=${encodeURIComponent(
+                '[[at(document.type, "product")]]'
+              )}&q=${encodeURIComponent(
+                '[[any(document.tags, ["Featured"])]]'
+              )}&lang=en-us&pageSize=16`,
+            {
+              signal: controller.signal,
+            }
+          );
+        }
+
+        if ((selectedCategories.length > 0) | (pathname === '/products')) {
+          response = await fetch(
+            commonUrl +
+              `&q=${encodeURIComponent('[[at(document.type, "product")]]')}
+              &q=${encodeURIComponent(
+                `[[any(my.product.category, ${JSON.stringify(
+                  selectedCategories
+                )})]]`
+              )}&lang=en-us&page=${page}&pageSize=12`,
+            {
+              signal: controller.signal,
+            }
+          );
+        }
         const data = await response.json();
-        const products = filterProducts(data.results);
-        dispatch(setPage(data.page));
-        dispatch(setTotalPages(data.total_pages));
-        dispatch(finishLoadingProducts());
-        dispatch(setFeaturedProducts(products));
+        setProducts({ data, isLoading: false });
       } catch (err) {
+        setProducts({ data: [], isLoading: true });
         console.error(err);
       }
     }
@@ -45,5 +80,12 @@ export function useProducts(page) {
     return () => {
       controller.abort();
     };
-  }, [apiRef, isApiMetadataLoading, page]);
+  }, [
+    apiRef,
+    isApiMetadataLoading,
+    page,
+    selectedCategories.length,
+    searchTerm,
+  ]);
+  return products;
 }

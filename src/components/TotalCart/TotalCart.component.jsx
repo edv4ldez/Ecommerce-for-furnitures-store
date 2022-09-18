@@ -22,7 +22,7 @@ const TotalCart = () => {
       {pathname === '/checkout' ? (
         <CheckoutButtons>
           <GoBack to="/cart">Go Back</GoBack>
-          <Buy to="/">Buy</Buy>
+          <Buy type="submit">Buy</Buy>
         </CheckoutButtons>
       ) : (
         <ProceedCheckout to="/checkout">Checkout</ProceedCheckout>

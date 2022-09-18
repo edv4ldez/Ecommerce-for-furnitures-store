@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { decrementPage, incrementPage } from '../../actions/page';
+import { backPage, nextPage } from '../../features/products/productsSlice';
 import {
   ButtonLeft,
   ButtonRight,
@@ -8,13 +8,13 @@ import {
 } from './Pagination.style';
 const Pagination = () => {
   const dispatch = useDispatch();
-  const { page, totalPages } = useSelector((state) => state.pages);
+  const { page, totalPages } = useSelector((state) => state.products);
   const handleIncrement = () => {
-    dispatch(incrementPage(page));
+    dispatch(nextPage(page));
   };
 
   const handleDecrement = () => {
-    dispatch(decrementPage(page));
+    dispatch(backPage(page));
   };
   return (
     <PaginationContainer>
@@ -25,12 +25,8 @@ const Pagination = () => {
       >
         <i className="fas fa-arrow-left"></i>
       </ButtonLeft>
-      <Index data-testid="page">{page}</Index>
-      <ButtonRight
-        data-testid="next"
-        onClick={handleIncrement}
-        disabled={page === totalPages}
-      >
+      <Index>{page}</Index>
+      <ButtonRight onClick={handleIncrement} disabled={page === totalPages}>
         <i className="fas fa-arrow-right"></i>
       </ButtonRight>
     </PaginationContainer>

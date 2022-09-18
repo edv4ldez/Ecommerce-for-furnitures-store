@@ -1,4 +1,4 @@
-export const filterBanners = (banners) => {
+export const mappingBanners = (banners) => {
   return banners.map((banner) => {
     return {
       id: banner.id,

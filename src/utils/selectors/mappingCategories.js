@@ -1,4 +1,4 @@
-export const filterCategories = (results) => {
+export const mappingCategories = (results) => {
   return results.map((category) => {
     return {
       id: category.id,

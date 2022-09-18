@@ -1,11 +1,12 @@
+import { Field, Form } from 'formik';
 import styled from 'styled-components';
 
-export const AddCartContainer = styled.div`
+export const AddCartContainer = styled(Form)`
   display: flex;
   margin-bottom: 8px;
 `;
 
-export const NumberProducts = styled.input`
+export const NumberProducts = styled(Field)`
   outline: none;
   border-radius: 8px;
   border-color: rgb(209, 209, 209);

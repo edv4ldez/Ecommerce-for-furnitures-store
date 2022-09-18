@@ -4,9 +4,8 @@ import Table from '../Table/Table.component';
 import './Details.styles';
 import { DetailsContainer, Titulo, Description, Price } from './Details.styles';
 const Details = () => {
-  const {
-    product: { name, text, price, stock, tags },
-  } = useSelector((state) => state.cart);
+  const { product } = useSelector((state) => state.cart);
+  const { text, price, tags, stock } = product;
   return (
     <DetailsContainer>
       <Titulo data-testid="name-product">{name}</Titulo>

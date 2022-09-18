@@ -10,8 +10,8 @@ import {
 } from './Gallery.style.js';
 
 const Gallery = () => {
-  const { productImages } = useSelector((state) => state.cart);
-  const [index, setIndex] = useState(0);
+  const { product } = useSelector((state) => state.cart);
+  const [index, setIndex] = useState(1);
   const handleBack = () => {
     if (index > 0) {
       setIndex((prev) => prev - 1);
@@ -19,16 +19,16 @@ const Gallery = () => {
   };
 
   const handleNext = () => {
-    if (index < productImages.length - 1) {
+    if (index < product.images.length - 1) {
       setIndex((prev) => prev + 1);
     }
   };
   return (
     <GalleryContainer>
-      {productImages.length === 0 ? (
+      {Object.keys(product).length === 0 ? (
         <img src={cat} alt="" />
       ) : (
-        <img src={productImages[index].url} height={200} width={200} alt="" />
+        <img src={product.images[index].url} height={200} width={200} alt="" />
       )}
       <GalleryArrows>
         <Back onClick={handleBack}>

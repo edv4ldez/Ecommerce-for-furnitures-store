@@ -1,4 +1,4 @@
-export const filterImages = (images) => {
+export const mappingImages = (images) => {
   return images.map((image) => {
     return {
       url: image.image.url,

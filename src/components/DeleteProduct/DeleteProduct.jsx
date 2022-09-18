@@ -1,16 +1,16 @@
 import { useDispatch } from 'react-redux';
 import {
+  calculateNumberOfProducts,
   calculateTotalCart,
-  calculateTotalProducts,
   deleteProduct,
-} from '../../actions/cart';
+} from '../../features/cart/cartSlice';
 import { Delete } from '../CartTable/Table.style';
 
 const DeleteProduct = ({ id }) => {
   const dispatch = useDispatch();
   const handleDelete = () => {
     dispatch(deleteProduct(id));
-    dispatch(calculateTotalProducts());
+    dispatch(calculateNumberOfProducts());
     dispatch(calculateTotalCart());
   };
   return <Delete onClick={handleDelete}>X</Delete>;

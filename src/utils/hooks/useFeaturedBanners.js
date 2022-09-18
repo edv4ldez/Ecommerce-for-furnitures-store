@@ -1,12 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { finishLoadingSlider, startLoadingSlider } from '../../actions/ui';
 import { API_BASE_URL } from '../constants';
-import { filterBanners } from '../selectors/filterBanners';
+import { mappingBanners } from '../selectors/mappingBanners';
 import { useLatestAPI } from './useLatestAPI';
 
 export function useFeaturedBanners() {
-  const dispatch = useDispatch();
   const { ref: apiRef, isLoading: isApiMetadataLoading } = useLatestAPI();
   const [featuredBanners, setFeaturedBanners] = useState(() => ({
     data: [],
@@ -18,7 +15,6 @@ export function useFeaturedBanners() {
       return () => {};
     }
 
-    dispatch(startLoadingSlider());
     const controller = new AbortController();
 
     async function getFeaturedBanners() {
@@ -33,11 +29,10 @@ export function useFeaturedBanners() {
           }
         );
         const { results } = await response.json();
-        const data = filterBanners(results);
-        dispatch(finishLoadingSlider());
+        const data = mappingBanners(results);
         setFeaturedBanners({ data, isLoading: false });
       } catch (err) {
-        setFeaturedBanners({ data: {}, isLoading: false });
+        setFeaturedBanners({ data: [], isLoading: false });
         console.error(err);
       }
     }
