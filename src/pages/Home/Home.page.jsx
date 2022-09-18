@@ -20,6 +20,7 @@ const Home = () => {
     data: { results },
     isLoading: isLoadingProducts,
   } = useProducts();
+  console.log(results);
   const { data: featuredCategories, isLoading: isLoadingCategories } =
     useCategories();
   const products = useMemo(() => mappingProducts(results), [results]);

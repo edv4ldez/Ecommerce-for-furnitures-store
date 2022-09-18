@@ -12,6 +12,7 @@ import {
 } from './ProductCard.style';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const ProductCard = ({
   categoryId,
@@ -23,8 +24,9 @@ const ProductCard = ({
   productId,
 }) => {
   const navigate = useNavigate();
-  const category = filterByCategory(categoryId);
-
+  const { categories } = useSelector((state) => state.categories);
+  const category = filterByCategory(categoryId, categories);
+  console.log(categories);
   const handleProductDetails = () => {
     navigate(`/productDetails/${productId}`, { replace: true });
   };
